@@ -10,11 +10,13 @@ class Chamado extends Model
 	protected $fillable = ['cliente_id', 'pedido_id', 'titulo', 'observacao'];
 	public $timestamps = false;
 
- 	public function cliente(){
+ 	public function cliente()
+ 	{
     	return $this->hasOne('App\Cliente','id', 'cliente_id');
     }
 
-    public function pedido(){
+    public function pedido()
+    {
     	return $this->hasOne('App\Pedido','id', 'pedido_id');
     }
 }

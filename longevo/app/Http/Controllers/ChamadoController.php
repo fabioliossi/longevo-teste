@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ChamadoRequest;
 use App\Cliente;
 use App\Chamado;
 use App\Pedido;
@@ -44,19 +45,24 @@ class ChamadoController extends Controller
  		return view('form');
  	}
 
- 	public function store(Request $request)
+ 	public function store(ChamadoRequest $request)
  	{
 
 		if( ! Pedido::where(['id'=>$request->input('txtPedido')])->first()  )
 		{
-			return response("Pedido não encontrado",400);
+			return response()->json(["pedido"=>["Pedido não encontrado"]],400);
 		}
 
 		$cliente = Cliente::where(['email'=>$request->input('txtEmail')])->first();
 
 		if(! $cliente)
 		{
-			$cliente = Cliente::create(['nome'=>$request->input('txtNome'), 'email'=>$request->input('txtEmail')]);			
+			$cliente = Cliente::create(
+				[
+					'nome'=>$request->input('txtNome'), 
+					'email'=>$request->input('txtEmail')
+				]
+			);			
 		}
 
 		Chamado::create(

@@ -10,7 +10,8 @@ class Pedido extends Model
 	protected $fillable = ['descricao'];
 	public $timestamps = false;
 
-	public function chamados(){
+	public function chamados()
+	{
     	return $this->hasMany('App\Chamado','id');
     }
 

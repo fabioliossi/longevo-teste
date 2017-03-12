@@ -20,7 +20,7 @@
               <div class="form-group">
                 <label for="lblPedido" class="control-label">Número do pedido</label>
                 <input type="number" name="txtPedido" class="form-control" id="txtPedido" placeholder="Digite o número do pedido" required>
-                <span class="help-block with-errors">Máximo de dez (10) digitos</span>
+                <span class="help-block with-errors">Máximo de seis (6) digitos</span>
               </div>
               
               <div class="form-group">

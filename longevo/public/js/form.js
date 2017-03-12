@@ -21,7 +21,14 @@ $( ".btn-cadastrar" ).click(function() {
       },
       error: function (error) {
         
-      	swal(error.responseText, "", "error");
+        errorMessage = "";
+        errorData = $.parseJSON(error.responseText);
+
+        $.each(errorData, function(i, item) {
+          errorMessage = errorMessage + item[0] + "\n";
+        })
+
+        swal("Alguns erros foram encontrados.", errorMessage, "error");
 
       }
     });
