@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ChamadoRequest;
+use App\Repositories\ClienteRepository;
+use App\Repositories\ChamadoRepository;
 use App\Cliente;
 use App\Chamado;
 use App\Pedido;
 
 class ChamadoController extends Controller
 {
+
+	public $clienteRepository;
+	public $chamadoRepository;
 
 	public function index(Request $request)
 	{
@@ -53,27 +58,19 @@ class ChamadoController extends Controller
 			return response()->json(["pedido"=>["Pedido não encontrado"]],400);
 		}
 
-		$cliente = Cliente::where(['email'=>$request->input('txtEmail')])->first();
+		$this->clienteRepository = new ClienteRepository();
+		$this->chamadoRepository = new ChamadoRepository();
 
-		if(! $cliente)
+		$cliente = $this->clienteRepository->getCliente($request);
+		$chamado = $this->chamadoRepository->save($request,$cliente);
+
+		$resposta = response("Chamado cadastrado com sucesso!",200);	
+
+		if(! $chamado)
 		{
-			$cliente = Cliente::create(
-				[
-					'nome'=>$request->input('txtNome'), 
-					'email'=>$request->input('txtEmail')
-				]
-			);			
+			$resposta = response("Erro ao salvar o chamado.",401);	
 		}
 
-		Chamado::create(
-			[
-				'cliente_id'=>$cliente->id,
-				'pedido_id'=>$request->input('txtPedido'),
-				'titulo'=>$request->input('txtTitulo'),
-				'observacao'=>$request->input('txtObservacao')
-			]);
-
-		return response("Chamado cadastrado com sucesso!",200);
-    	
+		return $resposta;
  	}
 }
